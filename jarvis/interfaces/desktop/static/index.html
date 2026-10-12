@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>JARVIS - personal AI operating system</title>
+<link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+<header>
+  <div class="brand">
+    <span class="dot" id="pulse"></span>
+    <h1>JARVIS</h1>
+    <span class="tag">persistent personal AI operating system</span>
+  </div>
+  <div class="controls">
+    <span id="connection" class="badge">connecting…</span>
+    <span id="version" class="badge dim"></span>
+    <label class="inline">mode
+      <select id="mode">
+        <option value="readonly">read-only</option>
+        <option value="standard">standard</option>
+        <option value="autonomous">autonomous</option>
+      </select>
+    </label>
+    <button id="halt" class="danger">EMERGENCY STOP</button>
+  </div>
+</header>
+
+<main>
+  <section class="col">
+    <div class="card">
+      <h2>Immediate request</h2>
+      <textarea id="intent" rows="3"
+        placeholder="Investigate this bug, fix it, run the tests and show me the verified result."></textarea>
+      <div class="row">
+        <select id="goal-select"><option value="">no goal</option></select>
+        <input id="priority" type="number" min="1" max="9" value="5" title="priority" />
+        <label class="inline"><input type="checkbox" id="autorun" checked /> run now</label>
+        <button id="send" class="primary">Send</button>
+      </div>
+      <p class="hint">Anything above the auto-approved risk level stops here and asks you first.</p>
+    </div>
+
+    <div class="card">
+      <h2>Approval queue <span class="count" id="approval-count">0</span></h2>
+      <div id="approvals" class="list"><p class="empty">nothing waiting</p></div>
+    </div>
+
+    <div class="card">
+      <h2>Long-term goals</h2>
+      <div id="goals" class="list"><p class="empty">no goals yet</p></div>
+      <details>
+        <summary>Adopt a goal</summary>
+        <input id="goal-title" placeholder="Title, e.g. Reach a tested release" />
+        <input id="goal-objective" placeholder="What done looks like" />
+        <input id="goal-milestones" placeholder="Milestones, comma separated" />
+        <input id="goal-monitor" placeholder='Monitor JSON, e.g. {"name":"ci","trigger":"event","kind":"ci.failure","intent":"Investigate"}' />
+        <div class="row">
+          <select id="goal-autonomy">
+            <option value="standard">standard</option>
+            <option value="readonly">read-only</option>
+            <option value="autonomous">autonomous</option>
+          </select>
+          <button id="adopt-goal" class="primary">Adopt</button>
+          <button id="advance">Advance all</button>
+        </div>
+      </details>
+    </div>
+
+    <div class="card">
+      <h2>Memory</h2>
+      <div class="row">
+        <input id="memory-query" placeholder="recall…" />
+        <button id="recall">Recall</button>
+      </div>
+      <div id="memory" class="list small"><p class="empty">no memories</p></div>
+      <div class="row">
+        <input id="memory-new" placeholder="remember this…" />
+        <button id="remember">Store</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="col wide">
+    <div class="card">
+      <h2>Task monitor <span class="count" id="task-count">0</span></h2>
+      <div class="row filters">
+        <button data-filter="" class="chip active">all</button>
+        <button data-filter="queued,running,verifying" class="chip">active</button>
+        <button data-filter="awaiting_approval" class="chip">awaiting approval</button>
+        <button data-filter="completed" class="chip">verified</button>
+        <button data-filter="blocked,failed" class="chip">blocked</button>
+        <button id="refresh" class="ghost">refresh</button>
+      </div>
+      <table id="tasks">
+        <thead><tr><th>state</th><th>verdict</th><th>phase</th><th>intent</th><th></th></tr></thead>
+        <tbody><tr><td colspan="5" class="empty">no tasks yet</td></tr></tbody>
+      </table>
+      <div id="task-detail" class="detail hidden"></div>
+    </div>
+
+    <div class="card">
+      <h2>Runtime</h2>
+      <div id="runtime" class="grid"></div>
+    </div>
+
+    <div class="card">
+      <h2>Live events</h2>
+      <ul id="events" class="events"></ul>
+    </div>
+  </section>
+</main>
+<script src="/static/app.js"></script>
+</body>
+</html>

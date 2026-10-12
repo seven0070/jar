@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "jarvis"
+version = "0.1.0"
+description = "JARVIS - persistent personal AI operating system and autonomous digital assistant"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Proprietary" }
+authors = [{ name = "JARVIS Project" }]
+dependencies = []
+
+[project.optional-dependencies]
+desktop = ["fastapi>=0.110", "uvicorn[standard]>=0.27"]
+voice = ["pyttsx3>=2.90", "SpeechRecognition>=3.10"]
+computer = ["pyautogui>=0.9.54", "pygetwindow>=0.0.9", "pyperclip>=1.8"]
+local = ["ollama>=0.1.7"]
+dev = ["pytest>=7.4", "httpx>=0.27"]
+
+[project.scripts]
+jarvis = "jarvis.interfaces.cli:main"
+jarvis-desktop = "jarvis.interfaces.desktop.app:main"
+
+[tool.setuptools.packages.find]
+include = ["jarvis*"]
+
+[tool.setuptools.package-data]
+"jarvis.interfaces.desktop" = ["static/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
